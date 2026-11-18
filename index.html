@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Point Of Then Signal</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Archivo:wdth,wght@62..125,400..800&display=swap">
+<style>
+/* Layout: one fixed WebGL stage; the page scrolls four plain text panels over it and the scroll drives a single camera and particle morph. */
+:root {
+  color-scheme: dark;
+  --night: #020818;      /* the channel's own backdrop blue-black */
+  --bronze: #d6ad6a;     /* the dust: Antikythera bronze */
+  --bone: #F3EFE7;       /* brand off-white */
+  --signal: #FF2A1C;     /* brand red, used once */
+  --cobalt: #2a5cff;
+  --mute: #9aa6c4;
+  --display: "Silkscreen", "Courier New", monospace;
+  --text: "Archivo", "Segoe UI", system-ui, sans-serif;
+}
+html { background: var(--night); }
+body { background: var(--night); color: var(--bone); font-family: var(--text); font-size: 17px; line-height: 1.5; overflow-x: hidden; }
+#stage { position: fixed; inset: 0; width: 100%; height: 100%; display: block; z-index: 0; }
+#fallback { position: fixed; inset: 0; z-index: 0; background: radial-gradient(60% 45% at 50% 40%, #1b2a55 0%, var(--night) 70%); }
+main { position: relative; z-index: 1; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.panel { min-height: 100svh; display: grid; grid-template-columns: minmax(0, 1fr); align-content: end; padding-block: 12svh 10svh; max-width: 1180px; margin: 0 auto; }
+.panel.mid { align-content: center; }
+#top { padding-block: 8svh 7svh; }
+h1, h2 { font-family: var(--display); font-weight: 700; line-height: 0.92; margin: 0; letter-spacing: 0; text-wrap: balance; }
+h1 { font-size: clamp(46px, 9vw, 150px); text-shadow: 0 0 28px rgba(214,173,106,.35); }
+h2 { font-size: clamp(25px, 6vw, 84px); overflow-wrap: anywhere; }
+p { margin: 0; max-width: 34ch; color: var(--bone); }
+.lede { font-size: clamp(18px, 2vw, 22px); font-stretch: 92%; margin-top: 22px; }
+.quiet { color: var(--mute); font-size: 15px; margin-top: 18px; }
+.figures { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr)); gap: 28px 40px; margin-top: 36px; max-width: 760px; }
+.figure b { display: block; font-family: var(--display); font-size: clamp(44px, 6vw, 72px); line-height: 1; color: var(--bronze); font-variant-numeric: tabular-nums; }
+.figure span { display: block; margin-top: 8px; font-size: 15px; color: var(--mute); max-width: 22ch; }
+.menu { display: grid; gap: 6px; margin-top: 26px; padding: 0; list-style: none; }
+.menu li { font-family: var(--display); font-size: clamp(22px, 3vw, 34px); }
+.menu li::before { content: "> "; color: var(--bronze); }
+.cta { justify-self: start; display: inline-block; margin-top: 30px; padding: 14px 22px; border: 1px solid var(--bone); color: var(--bone); text-decoration: none; font-family: var(--display); font-size: 16px; backdrop-filter: blur(6px); background: rgba(2,8,24,.35); }
+.cta:hover, .cta:focus-visible { background: var(--signal); border-color: var(--signal); outline: none; }
+.cta:focus-visible { box-shadow: 0 0 0 3px var(--bone); }
+.cue { font-family: var(--display); font-size: 13px; color: var(--mute); margin-top: 40px; }
+.right { justify-self: end; text-align: right; }
+.right p { margin-left: auto; }
+@media (max-width: 640px) {
+  .right { justify-self: start; text-align: left; }
+  .right p { margin-left: 0; }
+  .panel { padding-block: 10svh 8svh; }
+}
+</style>
+
+<div id="fallback" aria-hidden="true"></div>
+<canvas id="stage" aria-hidden="true"></canvas>
+
+<main>
+  <section class="panel" id="top">
+    <h1>Point<br>Of Then</h1>
+    <p class="lede">Science, history and news, one idea at a time.</p>
+    <p class="cue">Scroll to wind the machine</p>
+  </section>
+
+  <section class="panel mid right">
+    <h2>1901, off Antikythera, Greece</h2>
+    <p class="lede">A lump of corroded bronze came up from the sea. Inside it: a geared machine for the sky.</p>
+    <div class="figures">
+      <div class="figure"><b>30+</b><span>bronze gears</span></div>
+      <div class="figure"><b>223</b><span>teeth on the big wheel</span></div>
+      <div class="figure"><b>18</b><span>years: 223 moons, one turn</span></div>
+    </div>
+  </section>
+
+  <section class="panel mid">
+    <h2>What do you want to know?</h2>
+    <ul class="menu">
+      <li>Science</li>
+      <li>History</li>
+      <li>News</li>
+    </ul>
+    <p class="quiet">Each Short takes one of these and explains one idea.</p>
+  </section>
+
+  <section class="panel">
+    <h2>Watch it turn</h2>
+    <p class="lede">The Antikythera mechanism, explained in one Short.</p>
+    <a class="cta" href="https://youtube.com/shorts/A5VSGSFAVso" target="_blank" rel="noopener">Watch the Short on YouTube</a>
+  </section>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+<script>
+(() => {
+  if (!window.THREE || !THREE.EffectComposer || !THREE.UnrealBloomPass) return; // the gradient fallback stays
+  const canvas = document.getElementById('stage');
+  let renderer;
+  try { renderer = new THREE.WebGLRenderer({ canvas, antialias: false, powerPreference: 'high-performance' }); }
+  catch (e) { return; }
+  document.getElementById('fallback').hidden = true;
+
+  const FORCE_GLITCH = /glitchtest/.test(location.search); // local checks only
+  const DEBUG = /debug/.test(location.search); let frameCount = 0;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const small = Math.min(innerWidth, innerHeight) < 700;
+  const DPR = Math.min(devicePixelRatio || 1, small ? 1.5 : 1.75);
+  renderer.setPixelRatio(DPR);
+  renderer.setClearColor(0x020818, 1);
+
+  const scene = new THREE.Scene();
+  scene.fog = new THREE.FogExp2(0x020818, 0.045);
+  const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
+
+  // ---------- deterministic random ----------
+  let seed = 7;
+  const rnd = () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; };
+  const gauss = () => { let u = 0; for (let i = 0; i < 4; i++) u += rnd(); return (u - 2) / 1.15; };
+
+  // ---------- three shapes for the same dust ----------
+  const N = small ? 26000 : 60000;
+  const A = new Float32Array(N * 3), B = new Float32Array(N * 3), C = new Float32Array(N * 3);
+  const seedA = new Float32Array(N), gearA = new Float32Array(N * 3); // gear: cx, cy, ratio
+
+  // A: a vertical figure-eight ribbon of dust (lemniscate of Gerono), with a loose halo
+  for (let i = 0; i < N; i++) {
+    const t = rnd() * Math.PI * 2;
+    let x = Math.sin(t * 2) * 0.62, y = Math.sin(t) * 1.75;
+    const dx = Math.cos(t * 2) * 1.24, dy = Math.cos(t) * 1.75, l = Math.hypot(dx, dy);
+    const w = gauss() * 0.07 * (1 + 0.8 * Math.sin(t * 3 + 1));
+    x += (-dy / l) * w; y += (dx / l) * w;
+    let z = gauss() * 0.05 + Math.sin(t * 2) * 0.25;
+    if (rnd() < 0.16) { x += gauss() * 0.9; y += gauss() * 0.9; z += gauss() * 0.7; }
+    A.set([x, y - 0.35, z], i * 3);
+    seedA[i] = rnd();
+  }
+
+  // B: the Antikythera train: a 223-tooth wheel and two wheels that really mesh with it
+  const MOD = 0.0105;
+  const wheels = [
+    { teeth: 223, x: 0, y: 0, share: 0.62 },
+    { teeth: 64, x: 0, y: 0, share: 0.2 },
+    { teeth: 38, x: 0, y: 0, share: 0.18 },
+  ];
+  const R0 = 223 * MOD;
+  wheels[1].x = Math.cos(-0.55) * (R0 + 64 * MOD); wheels[1].y = Math.sin(-0.55) * (R0 + 64 * MOD);
+  wheels[2].x = Math.cos(2.5) * (R0 + 38 * MOD); wheels[2].y = Math.sin(2.5) * (R0 + 38 * MOD);
+  let k = 0;
+  wheels.forEach((w, wi) => {
+    const r = w.teeth * MOD, n = wi === 2 ? N - k : Math.floor(N * w.share);
+    const ratio = wi === 0 ? 1 : -223 / w.teeth;
+    for (let j = 0; j < n; j++, k++) {
+      const u = rnd();
+      let px, py;
+      if (u < 0.5) { // tooth outline
+        const a = rnd() * Math.PI * 2, step = Math.PI * 2 / w.teeth;
+        const ph = ((a / step) % 1 + 1) % 1;
+        const tooth = ph < 0.12 || ph > 0.88 ? 1 : ph < 0.38 ? 1 - (ph - 0.12) / 0.26 : ph > 0.62 ? (ph - 0.62) / 0.26 : 0;
+        const th = wi === 0 ? 0.024 : 0.034; const rr = r - th + tooth * th * 2 + gauss() * 0.003;
+        px = Math.cos(a) * rr; py = Math.sin(a) * rr;
+      } else if (u < 0.72) { // rim band
+        const a = rnd() * Math.PI * 2, rr = r - 0.03 - rnd() * Math.max(0.05, r * 0.08);
+        px = Math.cos(a) * rr; py = Math.sin(a) * rr;
+      } else if (u < 0.92) { // spokes
+        const s = Math.floor(rnd() * (wi === 0 ? 4 : 3)), a = s / (wi === 0 ? 4 : 3) * Math.PI * 2 + 0.3;
+        const along = 0.08 + rnd() * (r - 0.12), across = (rnd() - 0.5) * (wi === 0 ? 0.11 : 0.05);
+        px = Math.cos(a) * along - Math.sin(a) * across; py = Math.sin(a) * along + Math.cos(a) * across;
+      } else { // hub
+        const a = rnd() * Math.PI * 2, rr = Math.sqrt(rnd()) * (wi === 0 ? 0.16 : 0.06);
+        px = Math.cos(a) * rr; py = Math.sin(a) * rr;
+      }
+      B.set([px, py, gauss() * 0.02 + (wi === 0 ? 0 : 0.06)], k * 3);
+      gearA.set([w.x, w.y, ratio], k * 3);
+    }
+  });
+
+  // C: a flat spiral of dust behind the cards
+  for (let i = 0; i < N; i++) {
+    const arm = Math.floor(rnd() * 3), d = Math.pow(rnd(), 0.6) * 6.5;
+    const a = arm * 2.094 + d * 0.62 + gauss() * 0.28;
+    C.set([Math.cos(a) * d, gauss() * 0.18 * (1 + d * 0.15), Math.sin(a) * d - 5.5], i * 3);
+  }
+
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(A, 3));
+  geo.setAttribute('pB', new THREE.BufferAttribute(B, 3));
+  geo.setAttribute('pC', new THREE.BufferAttribute(C, 3));
+  geo.setAttribute('gear', new THREE.BufferAttribute(gearA, 3));
+  geo.setAttribute('seed', new THREE.BufferAttribute(seedA, 1));
+  const dustMat = new THREE.ShaderMaterial({
+    transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+    uniforms: { uMorph: { value: 0 }, uTime: { value: 0 }, uTurn: { value: 0 }, uPx: { value: DPR }, uB: { value: new THREE.Vector3(0, 0.15, 0) }, uBTilt: { value: 0.9 } },
+    vertexShader: `
+      attribute vec3 pB; attribute vec3 pC; attribute vec3 gear; attribute float seed;
+      uniform float uMorph, uTime, uTurn, uPx, uBTilt; uniform vec3 uB;
+      varying float vA; varying float vS;
+      vec3 drift(vec3 p, float s){ float t=uTime*.35+s*40.;
+        return vec3(sin(t+p.y*1.7), cos(t*.8+p.x*1.3), sin(t*.6+p.z*2.))*.025; }
+      void main(){
+        float ang = uTurn * gear.z;
+        float c=cos(ang), s=sin(ang);
+        vec3 b = vec3(c*pB.x - s*pB.y, s*pB.x + c*pB.y, pB.z) + vec3(gear.xy, 0.);
+        float cb=cos(uBTilt), sb=sin(uBTilt);
+        b = vec3(b.x, b.y*cb - b.z*sb, b.y*sb + b.z*cb) + uB;
+        float m = uMorph;
+        float seg = floor(min(m, 2.999));
+        float f = clamp((m - seg) * 1.6 - seed * .6, 0., 1.);
+        f = f*f*(3.-2.*f);
+        vec3 p0 = seg < .5 ? position : seg < 1.5 ? b : pC;
+        vec3 p1 = seg < .5 ? b : seg < 1.5 ? pC : position;
+        vec3 p = mix(p0, p1, f);
+        float swirl = sin(f*3.14159);
+        p += vec3(sin(seed*91.), cos(seed*53.), sin(seed*27.)) * swirl * .9;
+        p += drift(p, seed);
+        vec4 mv = modelViewMatrix * vec4(p, 1.);
+        float spark = step(.985, fract(seed*977. + uTime*.07));
+        gl_PointSize = (1.1 + seed*seed*2.6 + spark*3.) * uPx * (5.5 / -mv.z);
+        vA = .35 + seed*.5 + spark*.8; vS = spark;
+        gl_Position = projectionMatrix * mv;
+      }`,
+    fragmentShader: `
+      varying float vA; varying float vS;
+      void main(){ float d=length(gl_PointCoord-.5); float a=smoothstep(.5,0.,d);
+        vec3 bronze=vec3(1.05,.72,.38); vec3 white=vec3(1.4,1.35,1.25);
+        gl_FragColor=vec4(mix(bronze, white, vS)*a*vA, a*vA); }`,
+  });
+  const dust = new THREE.Points(geo, dustMat);
+  dust.frustumCulled = false;
+  scene.add(dust);
+
+  // ---------- chrome ring: thin-film colours by viewing angle ----------
+  const ringMat = new THREE.ShaderMaterial({
+    uniforms: { uTime: { value: 0 }, uFade: { value: 1 } },
+    transparent: true,
+    vertexShader: `varying vec3 vN; varying vec3 vV;
+      void main(){ vec4 w = modelViewMatrix*vec4(position,1.); vN = normalize(normalMatrix*normal); vV = normalize(-w.xyz); gl_Position = projectionMatrix*w; }`,
+    fragmentShader: `varying vec3 vN; varying vec3 vV; uniform float uTime; uniform float uFade;
+      vec3 film(float x){ return .5+.5*cos(6.2831*(x+vec3(0.,.33,.67))); }
+      void main(){ float nv = clamp(dot(normalize(vN), vV), 0., 1.);
+        float fr = pow(1.-nv, 2.2);
+        vec3 c = mix(vec3(.75,.8,.9)*.55, film(nv*1.4 + uTime*.05)*1.25, .55);
+        c += fr*vec3(1.6,1.5,1.4);
+        c *= .55 + .45*smoothstep(-.4,.8,vN.y);
+        gl_FragColor = vec4(c*uFade, uFade); }`,
+  });
+  const ring = new THREE.Mesh(new THREE.TorusGeometry(0.42, 0.075, 48, 160), ringMat);
+  scene.add(ring);
+  const ringIn = new THREE.Mesh(new THREE.TorusGeometry(0.24, 0.03, 32, 120), ringMat);
+  scene.add(ringIn);
+
+  // ---------- glass cards with drawn subjects ----------
+  const cardTex = (draw) => {
+    const c = document.createElement('canvas'); c.width = 512; c.height = 704;
+    const x = c.getContext('2d'); draw(x, c.width, c.height);
+    const t = new THREE.CanvasTexture(c); t.anisotropy = 4; return { t, c, draw };
+  };
+  const label = (x, W, H, word) => {
+    x.font = '700 58px Silkscreen, "Courier New", monospace'; x.fillStyle = '#F3EFE7'; x.textAlign = 'left';
+    x.shadowColor = 'rgba(0,0,0,.6)'; x.shadowBlur = 18; x.fillText(word, 34, H - 44); x.shadowBlur = 0;
+  };
+  const drawScience = (x, W, H) => { // solar eclipse corona
+    const g = x.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#0b1640'); g.addColorStop(1, '#02040c');
+    x.fillStyle = g; x.fillRect(0, 0, W, H);
+    const cx = W / 2, cy = H * 0.42, r = 96;
+    let s = 3; const rr = () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; };
+    x.globalCompositeOperation = 'lighter';
+    for (let i = 0; i < 900; i++) {
+      const a = rr() * Math.PI * 2, len = r * (0.15 + Math.pow(rr(), 3) * 2.2);
+      x.strokeStyle = `rgba(${200 + rr() * 55},${215 + rr() * 40},255,${0.03 + rr() * 0.05})`;
+      x.lineWidth = 1 + rr() * 2;
+      x.beginPath(); x.moveTo(cx + Math.cos(a) * r, cy + Math.sin(a) * r); x.lineTo(cx + Math.cos(a) * (r + len), cy + Math.sin(a) * (r + len)); x.stroke();
+    }
+    const halo = x.createRadialGradient(cx, cy, r, cx, cy, r * 2.4); halo.addColorStop(0, 'rgba(220,235,255,.55)'); halo.addColorStop(1, 'rgba(220,235,255,0)');
+    x.fillStyle = halo; x.beginPath(); x.arc(cx, cy, r * 2.4, 0, 7); x.fill();
+    x.globalCompositeOperation = 'source-over';
+    x.fillStyle = '#000'; x.beginPath(); x.arc(cx, cy, r, 0, 7); x.fill();
+    x.fillStyle = '#fff'; x.beginPath(); x.arc(cx - r * 0.7, cy - r * 0.7, 6, 0, 7); x.fill();
+    label(x, W, H, 'Science');
+  };
+  const drawHistory = (x, W, H) => { // the 223-tooth wheel, corroded
+    const g = x.createRadialGradient(W / 2, H * 0.4, 20, W / 2, H * 0.4, H * 0.7); g.addColorStop(0, '#1c2c55'); g.addColorStop(1, '#03060f');
+    x.fillStyle = g; x.fillRect(0, 0, W, H);
+    const cx = W / 2, cy = H * 0.42, R = 190, T = 223;
+    x.beginPath();
+    for (let i = 0; i <= T * 4; i++) {
+      const a = i / (T * 4) * Math.PI * 2, ph = (i % 4) / 4;
+      const r = ph === 0 || ph === 0.25 ? R + 7 : R - 5;
+      i ? x.lineTo(cx + Math.cos(a) * r, cy + Math.sin(a) * r) : x.moveTo(cx + Math.cos(a) * r, cy + Math.sin(a) * r);
+    }
+    x.closePath();
+    x.arc(cx, cy, R - 34, 0, Math.PI * 2, true);
+    const bz = x.createLinearGradient(cx - R, cy - R, cx + R, cy + R); bz.addColorStop(0, '#f0c98a'); bz.addColorStop(0.5, '#a3763f'); bz.addColorStop(1, '#5b3d1e');
+    x.fillStyle = bz; x.fill('evenodd');
+    for (let s = 0; s < 4; s++) {
+      x.save(); x.translate(cx, cy); x.rotate(s * Math.PI / 2 + 0.3); x.fillStyle = bz; x.fillRect(-12, 0, 24, R - 30); x.restore();
+    }
+    x.fillStyle = '#7a5530'; x.beginPath(); x.arc(cx, cy, 30, 0, 7); x.fill();
+    let s = 11; const rr = () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; };
+    for (let i = 0; i < 70; i++) { // verdigris
+      const a = rr() * 7, d = R - 20 - rr() * 30;
+      x.fillStyle = `rgba(110,190,160,${0.25 + rr() * 0.4})`;
+      x.beginPath(); x.arc(cx + Math.cos(a) * d, cy + Math.sin(a) * d, 3 + rr() * 12, 0, 7); x.fill();
+    }
+    label(x, W, H, 'History');
+  };
+  const drawNews = (x, W, H) => { // a pulse spreading through a dot grid
+    x.fillStyle = '#030716'; x.fillRect(0, 0, W, H);
+    const cx = W * 0.62, cy = H * 0.38;
+    for (let gy = 16; gy < H - 120; gy += 16) for (let gx = 16; gx < W; gx += 16) {
+      const d = Math.hypot(gx - cx, gy - cy), wave = Math.max(0, Math.cos(d / 22) * Math.exp(-d / 260));
+      x.fillStyle = `rgba(${60 + wave * 190},${100 + wave * 130},255,${0.18 + wave * 0.8})`;
+      const rr = 1.4 + wave * 3.4; x.beginPath(); x.arc(gx, gy, rr, 0, 7); x.fill();
+    }
+    x.fillStyle = '#FF2A1C'; x.beginPath(); x.arc(cx, cy, 11, 0, 7); x.fill();
+    label(x, W, H, 'News');
+  };
+  const textures = [cardTex(drawScience), cardTex(drawHistory), cardTex(drawNews)];
+  document.fonts && document.fonts.ready.then(() => textures.forEach((o) => { o.draw(o.c.getContext('2d'), o.c.width, o.c.height); o.t.needsUpdate = true; }));
+
+  const roundRect = (w, h, r) => {
+    const s = new THREE.Shape();
+    s.moveTo(-w / 2 + r, -h / 2); s.lineTo(w / 2 - r, -h / 2); s.quadraticCurveTo(w / 2, -h / 2, w / 2, -h / 2 + r);
+    s.lineTo(w / 2, h / 2 - r); s.quadraticCurveTo(w / 2, h / 2, w / 2 - r, h / 2); s.lineTo(-w / 2 + r, h / 2);
+    s.quadraticCurveTo(-w / 2, h / 2, -w / 2, h / 2 - r); s.lineTo(-w / 2, -h / 2 + r); s.quadraticCurveTo(-w / 2, -h / 2, -w / 2 + r, -h / 2);
+    const g = new THREE.ShapeGeometry(s, 10);
+    const p = g.attributes.position, uv = g.attributes.uv;
+    for (let i = 0; i < p.count; i++) uv.setXY(i, p.getX(i) / w + 0.5, p.getY(i) / h + 0.5);
+    return g;
+  };
+  const cardGeo = roundRect(1.28, 1.76, 0.1);
+  const cards = textures.map((o, i) => {
+    const m = new THREE.ShaderMaterial({
+      transparent: true, depthWrite: false, side: THREE.DoubleSide,
+      uniforms: { map: { value: o.t }, uTime: { value: 0 }, uFade: { value: 0 }, uGlitch: { value: 0 } },
+      vertexShader: `varying vec2 vU; varying vec3 vN; varying vec3 vV;
+        void main(){ vU=uv; vec4 w=modelViewMatrix*vec4(position,1.); vN=normalize(normalMatrix*normal); vV=normalize(-w.xyz); gl_Position=projectionMatrix*w; }`,
+      fragmentShader: `uniform sampler2D map; uniform float uTime, uFade; varying vec2 vU; varying vec3 vN; varying vec3 vV;
+        vec3 film(float x){ return .5+.5*cos(6.2831*(x+vec3(0.,.33,.67))); }
+        void main(){
+          vec2 e = min(vU, 1.-vU); float edge = 1.-smoothstep(0.,.035,min(e.x,e.y*1.37));
+          float nv = abs(dot(normalize(vN), vV));
+          vec2 warp = vec2(sin(vU.y*14.+uTime*.6), cos(vU.x*11.-uTime*.5))*.004*(1.-nv+.3);
+          vec3 img;
+          img.r = texture2D(map, vU+warp*1.6).r; img.g = texture2D(map, vU+warp).g; img.b = texture2D(map, vU+warp*.4).b;
+          vec3 c = img*.92 + mix(vec3(.9), film(nv*1.7+vU.y*.6), .45)*edge*.55 + pow(1.-nv,3.)*.3;
+          float sheen = smoothstep(.02,0.,abs(vU.x - vU.y*.6 - fract(uTime*.07)*2. + .5))*.25;
+          c += sheen;
+          gl_FragColor = vec4(c*uFade, uFade*(.9+edge*.1)); }`,
+    });
+    const mesh = new THREE.Mesh(cardGeo, m);
+    scene.add(mesh);
+    return mesh;
+  });
+
+  // ---------- post: bloom, then a scroll-driven glitch ----------
+  const composer = new THREE.EffectComposer(renderer);
+  composer.addPass(new THREE.RenderPass(scene, camera));
+  const bloom = new THREE.UnrealBloomPass(new THREE.Vector2(256, 256), 0.85, 0.55, 0.22);
+  composer.addPass(bloom);
+  const glitch = new THREE.ShaderPass({
+    uniforms: { tDiffuse: { value: null }, uAmt: { value: 0 }, uTime: { value: 0 }, uRes: { value: new THREE.Vector2(1, 1) } },
+    vertexShader: 'varying vec2 vU; void main(){ vU=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.); }',
+    fragmentShader: `uniform sampler2D tDiffuse; uniform float uAmt, uTime; uniform vec2 uRes; varying vec2 vU;
+      float h(vec2 p){ return fract(sin(dot(p, vec2(127.1,311.7)))*43758.5453); }
+      void main(){
+        vec2 uv = vU; float a = uAmt;
+        float t = floor(uTime*18.);
+        float row = floor(uv.y*mix(18.,60.,h(vec2(t,1.))));
+        float on = step(1.-a*.9, h(vec2(row, t)));
+        uv.x += (h(vec2(row, t+3.))-.5)*.25*a*on;
+        float px = mix(1., 28., a*a*on);
+        uv = (floor(uv*uRes/px)+.5)*px/uRes;
+        vec3 c;
+        c.r = texture2D(tDiffuse, uv+vec2(.012*a,0.)).r;
+        c.g = texture2D(tDiffuse, uv).g;
+        c.b = texture2D(tDiffuse, uv-vec2(.012*a,0.)).b;
+        // a short smear to the right: brightest of a few samples, like sorted pixels
+        vec3 sm = c;
+        for (int i=1;i<6;i++){ vec3 s = texture2D(tDiffuse, uv - vec2(float(i)*.012*a*on, 0.)).rgb; sm = max(sm, s*(1.-float(i)*.12)); }
+        c = mix(c, sm, on*a);
+        gl_FragColor = vec4(c, 1.); }`,
+  });
+  composer.addPass(glitch);
+
+  // ---------- scroll: one smoothed progress drives everything ----------
+  let target = 0, prog = 0, vel = 0;
+  // progress is measured against the panels themselves, so tall phone panels keep the same beats
+  const panels = [...document.querySelectorAll('.panel')];
+  const readScroll = () => {
+    const max = document.documentElement.scrollHeight - innerHeight;
+    const marks = panels.map((el, i) => i === panels.length - 1 ? max : Math.min(max, el.offsetTop));
+    const y = scrollY; let s = 0;
+    for (let i = 0; i < marks.length - 1; i++) {
+      if (y >= marks[i]) s = i + Math.min(1, (y - marks[i]) / Math.max(1, marks[i + 1] - marks[i]));
+    }
+    target = s / (marks.length - 1);
+  };
+  addEventListener('scroll', readScroll, { passive: true });
+  let mx = 0, my = 0;
+  addEventListener('pointermove', (e) => { mx = e.clientX / innerWidth - 0.5; my = e.clientY / innerHeight - 0.5; }, { passive: true });
+
+  const resize = () => {
+    const w = innerWidth, h = innerHeight;
+    renderer.setSize(w, h, false); composer.setSize(w, h);
+    bloom.setSize(w * DPR * 0.5, h * DPR * 0.5);
+    glitch.uniforms.uRes.value.set(w * DPR, h * DPR);
+    camera.aspect = w / h; camera.updateProjectionMatrix();
+    readScroll();
+  };
+  addEventListener('resize', resize); resize();
+
+  const ss = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const bump = (c, w, x) => Math.max(0, 1 - Math.abs(x - c) / w);
+
+  let last = performance.now(), time = 0;
+  const frame = (now) => {
+    const dt = Math.min(0.05, (now - last) / 1000); last = now; time += reduce ? 0 : dt;
+    const prev = prog;
+    const dtS = Math.min(0.5, (now - (frame.prev || now)) / 1000); frame.prev = now; // a throttled tab still catches up
+    prog += (target - prog) * (1 - Math.exp(-Math.max(dt, dtS) * 6));
+    if (DEBUG) prog = target; // local checks: no smoothing to wait for
+    vel = lerp(vel, Math.abs(prog - prev) / Math.max(dt, 1e-3), 1 - Math.exp(-dt * 10));
+    if (FORCE_GLITCH || DEBUG) document.documentElement.dataset.stage = prog.toFixed(3) + ' ' + target.toFixed(3) + ' ' + (++frameCount);
+    const p = prog, portrait = innerHeight > innerWidth;
+
+    // dust morph: ribbon (0) -> gears (1) -> spiral (2) -> ribbon (3)
+    const morph = ss(0.12, 0.3, p) + ss(0.42, 0.6, p) + ss(0.74, 0.92, p);
+    dustMat.uniforms.uMorph.value = morph;
+    dustMat.uniforms.uTime.value = time;
+    dustMat.uniforms.uTurn.value = time * 0.08 + p * 1.6;
+    dustMat.uniforms.uB.value.set(portrait ? 0.3 : -1.2, portrait ? 2.1 : 0.1, 0);
+
+    // ring sits on top of the eight, leaves for the gears and comes back at the end
+    const ringOn = 1 - ss(0.1, 0.22, p) + ss(0.8, 0.95, p);
+    ringMat.uniforms.uFade.value = Math.min(1, ringOn);
+    ringMat.uniforms.uTime.value = time;
+    const ry = lerp(1.62, 2.4, ss(0.1, 0.22, p) * (1 - ss(0.8, 0.95, p))) - 0.35;
+    ring.position.set(0, ry, 0.05); ringIn.position.copy(ring.position);
+    ring.rotation.set(0.25 + Math.sin(time * 0.4) * 0.15, time * 0.5, 0);
+    ringIn.rotation.set(-0.4, -time * 0.8, 0.3);
+    ring.visible = ringIn.visible = ringOn > 0.01;
+
+    // cards fly in for the third panel
+    const cardIn = ss(0.5, 0.64, p) * (1 - ss(0.8, 0.9, p));
+    cards.forEach((c, i) => {
+      const o = i - 1;
+      const sp = portrait ? [o * 0.45, o * -0.8 + 2.05, -0.6 - Math.abs(o) * 0.4] : [o * 1.55 + 0.9, o * 0.12, -Math.abs(o) * 0.55];
+      const fly = 1 - cardIn;
+      c.position.set(sp[0] + fly * o * 2.5, sp[1] - fly * 2.5, sp[2] - fly * 3);
+      c.rotation.set(-0.12 + fly * 0.6 + my * 0.15, -o * 0.38 + mx * 0.3 + Math.sin(time * 0.5 + i) * 0.04, o * 0.04);
+      if (portrait) c.scale.setScalar(0.6);
+      else c.scale.setScalar(1);
+      c.material.uniforms.uFade.value = cardIn;
+      c.material.uniforms.uTime.value = time + i * 3;
+      c.visible = cardIn > 0.01;
+    });
+
+    // camera: front-on for the eight, a 3/4 look at the gears, wide for the spiral
+    const gearV = ss(0.18, 0.3, p) * (1 - ss(0.45, 0.58, p));
+    // a phone is too narrow for the 3/4 view: pull back and look more head-on so the wheel still reads
+    const dist = (portrait ? 8.4 : 6.4) + gearV * (portrait ? 3.6 : -0.2) + ss(0.45, 0.6, p) * 1.2 * (1 - ss(0.78, 0.92, p));
+    const camX = gearV * (portrait ? 0.3 : 1.4) + mx * 0.6, camY = gearV * (portrait ? -0.5 : -1.4) - my * 0.4;
+    dustMat.uniforms.uBTilt.value = portrait ? 0.4 : 0.9;
+    scene.fog.density = 0.045 * (1 - (portrait ? 0.7 : 0.2) * gearV);
+    camera.position.set(camX, camY + 0.2, dist);
+    camera.lookAt(gearV * (portrait ? 0 : -0.6), 0.1 + gearV * 0.1, 0);
+    dust.rotation.y = Math.sin(time * 0.15) * 0.25 * (1 - gearV) + ss(0.45, 0.6, p) * (1 - ss(0.78, 0.92, p)) * time * 0.04;
+
+    // glitch at each section change, scaled by how fast the reader moves
+    const edges = bump(0.21, 0.05, p) + bump(0.51, 0.05, p) + bump(0.83, 0.05, p);
+    glitch.uniforms.uAmt.value = reduce ? 0 : Math.min(1, edges * (0.25 + Math.min(vel * 6, 0.9)));
+    if (FORCE_GLITCH) glitch.uniforms.uAmt.value = 0.7;
+    glitch.uniforms.uTime.value = time;
+
+    composer.render();
+    requestAnimationFrame(frame);
+  };
+  requestAnimationFrame(frame);
+})();
+</script>
